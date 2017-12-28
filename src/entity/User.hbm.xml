@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="entity.User" table="t_users">
+		<id name="id" column="id" type="int">
+			<generator class="increment" />
+		</id>
+		<property name="name" column="user"/>
+		<property name="passwordMD5" column="password_md5"  />
+		<property name="xm" column="xm"  />
+		<property name="email" column="email"  />
+		<property name="phone" column="phone"  />
+		<property name="qq" column="qq"  />		
+	</class>
+</hibernate-mapping>
+ 

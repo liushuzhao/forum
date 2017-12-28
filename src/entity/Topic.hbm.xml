@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="entity.Topic" table="t_topics">
+		<id name="id" column="id" type="int">
+			<generator class="increment" />
+		</id>
+		<property name="topic" column="topic" />
+		<property name="postTopicTime" column="post_topic_time" />
+		<property name="viewCount" column="view_count" />
+		<property name="replyCount" column="reply_count" />
+		<property name="lastReplyTime" column="last_reply_time" />
+		<property name="topicPath" column="topic_path" />
+		<many-to-one name="user" column="user_id"
+			class="entity.User" cascade="all" lazy="false">
+		</many-to-one>
+		<many-to-one name="lastReplyUser" column="last_reply_user_id"
+			class="entity.User" cascade="all" lazy="false" >
+		</many-to-one>
+	
+	</class>
+</hibernate-mapping>

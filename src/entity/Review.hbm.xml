@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="entity.Review" table="t_reviews">
+		<id name="id" column="id" type="int">
+			<generator class="increment" />
+		</id>
+		<property name="reviewTime" column="review_time" />
+		<property name="topicId" column="topic_id" />
+		<many-to-one name="reviewUser" column="review_user_id"
+			class="entity.User" cascade="all" lazy="false" >
+		</many-to-one>
+	</class>
+</hibernate-mapping>

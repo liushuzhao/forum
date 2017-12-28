@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="configLocation"
+			value="classpath:hibernate.cfg.xml">
+		</property>
+	</bean>
+	<bean id="hibernateTemplate"
+		class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+
+
+	<bean id="transactionInterceptor"
+		class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED, readOnly</prop>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<bean
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames">
+			<list>
+				<value>userDAO</value>
+				<value>topicDAO</value>
+				<value>reviewDAO</value>
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>transactionInterceptor</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="userDAO" class="dao.UserDAOImpl">
+		<constructor-arg>
+			<ref bean="hibernateTemplate" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="topicDAO" class="dao.TopicDAOImpl">
+		<constructor-arg>
+			<ref bean="hibernateTemplate" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="reviewDAO" class="dao.ReviewDAOImpl">
+		<constructor-arg>
+			<ref bean="hibernateTemplate" />
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="userService" class="service.UserServiceImpl">
+		<constructor-arg>
+			<ref bean="userDAO" />
+		</constructor-arg>
+	</bean>
+	<bean id="topicService" class="service.TopicServiceImpl">
+		<constructor-arg>
+			<ref bean="topicDAO" />
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="userDAO" />
+		</constructor-arg>
+	</bean>
+	<bean id="reviewService" class="service.ReviewServiceImpl">
+		<constructor-arg>
+			<ref bean="userDAO" />
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="topicDAO" />
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="reviewDAO" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="serviceManager" class="service.ServiceManager">
+		<property name="userService">
+			<ref bean="userService" />
+		</property>
+		<property name="topicService">
+			<ref bean="topicService" />
+		</property>
+		<property name="reviewService">
+			<ref bean="reviewService" />
+		</property>
+	</bean>
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>WEB-INF\forum.properties</value>
+		</property>
+	</bean>
+	<bean id="userInfo" class="common.UserInfo" scope="prototype">
+		<property name="pageTopicNumber" value="${pageTopicNumber}" />
+	</bean>
+</beans>

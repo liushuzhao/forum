@@ -1,0 +1,52 @@
+# 建立数据库 forum
+CREATE DATABASE IF NOT EXISTS forum DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+# 删除表t_users 
+DROP TABLE IF EXISTS forum.t_users;
+
+# 创建表t_users
+CREATE TABLE IF NOT EXISTS forum.t_users (
+  id int(11) NOT NULL auto_increment,
+  user varchar(20) NOT NULL,
+  password_md5 varchar(50) NOT NULL,
+  xm varchar(10) default NULL,
+  email varchar(20) default NULL,
+  phone varchar(20) default NULL,
+  qq varchar(12) default NULL,
+  PRIMARY KEY  (id),
+  UNIQUE KEY user (user)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+# 删除表t_reviews
+DROP TABLE IF EXISTS forum.t_reviews;
+
+# 创建表t_reviews
+CREATE TABLE IF NOT EXISTS forum.t_reviews (
+  id int(11) NOT NULL auto_increment,
+  review_user_id int(11) NOT NULL,
+  topic_id int(11) NOT NULL,
+  review_time datetime NOT NULL,
+  PRIMARY KEY  (id),
+  KEY user_id (review_user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+
+# 删除表t_topics
+DROP TABLE IF EXISTS forum.t_topics;
+
+# 创建表t_topics
+CREATE TABLE IF NOT EXISTS forum.t_topics (
+  id int(11) NOT NULL auto_increment,
+  topic varchar(100) NOT NULL,
+  post_topic_time datetime NOT NULL,
+  user_id int(11) NOT NULL,
+  view_count int(11) NOT NULL default '0',
+  reply_count int(11) NOT NULL default '0',
+  last_reply_time datetime NOT NULL,
+  last_reply_user_id int(11) NOT NULL,
+  topic_path varchar(10) NOT NULL,
+  PRIMARY KEY  (id),
+  UNIQUE KEY user_path (user_id,topic_path)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

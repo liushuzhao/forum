@@ -1,0 +1,14 @@
+/action/
+/com/
+/common/
+/dao/
+/entity/
+/globalResource.properties
+/hibernate/
+/hibernate.cfg.xml
+/interceptor/
+/log4j.properties
+/service/
+/struts.properties
+/struts.xml
+/test/
